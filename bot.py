@@ -4,7 +4,6 @@ import json
 import hashlib
 import feedparser
 import requests
-from anthropic import Anthropic
 
 # ── Ayarlar ──────────────────────────────────────────────────────────────────
 TELEGRAM_TOKEN = os.environ.get("TELEGRAM_TOKEN", "8508147797:AAH1ryzFBV149iEXcv8xKyY3Y-dkGBd_NBI")
@@ -28,7 +27,6 @@ CHECK_INTERVAL_MINUTES = 15
 SEEN_FILE = "seen_tweets.json"
 
 # ── İstemci ──────────────────────────────────────────────────────────────────
-client = Anthropic(api_key=ANTHROPIC_API_KEY)
 
 
 def load_seen() -> set:
@@ -73,22 +71,20 @@ def fetch_tweets(username: str) -> list:
 
 
 def translate_tweet(text: str) -> str:
-    """Claude Haiku ile çevir — en ekonomik model."""
+    """Google Translate API ile çevir — ücretsiz."""
     try:
-        response = client.messages.create(
-            model="claude-haiku-4-5-20251001",
-            max_tokens=400,
-            messages=[{
-                "role": "user",
-                "content": (
-                    "Aşağıdaki tweet'i Türkçe'ye çevir. "
-                    "Sadece çeviriyi yaz, açıklama ekleme. "
-                    "Emojileri ve hashtag'leri koru.\n\n"
-                    f"{text}"
-                )
-            }]
-        )
-        return response.content[0].text.strip()
+        url = "https://translate.googleapis.com/translate_a/single"
+        params = {
+            "client": "gtx",
+            "sl": "en",
+            "tl": "tr",
+            "dt": "t",
+            "q": text
+        }
+        r = requests.get(url, params=params, timeout=10)
+        result = r.json()
+        translated = "".join([item[0] for item in result[0] if item[0]])
+        return translated
     except Exception as e:
         print(f"  [HATA] Çeviri başarısız: {e}")
         return text
