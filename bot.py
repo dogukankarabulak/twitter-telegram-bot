@@ -116,35 +116,31 @@ def format_message(tweet: dict, translation: str) -> str:
 
 
 def run():
-    print("✅ Bot başlatıldı!")
+    print("✅ Bot çalıştı!")
     print(f"📋 Takip edilen {len(TWITTER_ACCOUNTS)} hesap: {', '.join(TWITTER_ACCOUNTS)}")
-    print(f"⏱  Her {CHECK_INTERVAL_MINUTES} dakikada bir kontrol edilecek\n")
 
     seen = load_seen()
+    yeni_tweet_sayisi = 0
 
-    while True:
-        print(f"\n🔍 Kontrol başladı...")
-        yeni_tweet_sayisi = 0
+    print(f"\n🔍 Kontrol başladı...")
 
-        for username in TWITTER_ACCOUNTS:
-            tweets = fetch_tweets(username)
-            for tweet in reversed(tweets):
-                if tweet["id"] in seen:
-                    continue
+    for username in TWITTER_ACCOUNTS:
+        tweets = fetch_tweets(username)
+        for tweet in reversed(tweets):
+            if tweet["id"] in seen:
+                continue
 
-                print(f"  → Yeni tweet: @{username}: {tweet['title'][:60]}...")
-                translation = translate_tweet(tweet["title"])
-                message = format_message(tweet, translation)
-                send_telegram(message)
+            print(f"  → Yeni tweet: @{username}: {tweet['title'][:60]}...")
+            translation = translate_tweet(tweet["title"])
+            message = format_message(tweet, translation)
+            send_telegram(message)
 
-                seen.add(tweet["id"])
-                save_seen(seen)
-                yeni_tweet_sayisi += 1
-                time.sleep(2)
+            seen.add(tweet["id"])
+            save_seen(seen)
+            yeni_tweet_sayisi += 1
+            time.sleep(2)
 
-        print(f"✓ Tamamlandı. {yeni_tweet_sayisi} yeni tweet gönderildi.")
-        print(f"💤 {CHECK_INTERVAL_MINUTES} dakika bekleniyor...\n")
-        time.sleep(CHECK_INTERVAL_MINUTES * 60)
+    print(f"✓ Tamamlandı. {yeni_tweet_sayisi} yeni tweet gönderildi.")
 
 
 if __name__ == "__main__":
