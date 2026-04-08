@@ -17,11 +17,8 @@ TWITTER_ACCOUNTS = [
 ]
 
 NITTER_INSTANCES = [
-    "nitter.tiekoetter.com",
-    "nitter.rawbit.ninja",
-    "nitter.mint.lgbt",
-    "nitter.lucahammer.com",
-    "nitter.cz",
+    "rsshub.app",
+    "hub.sov.gd",
 ]
 
 CHECK_INTERVAL_MINUTES = 15
@@ -48,9 +45,9 @@ def tweet_id(entry) -> str:
 
 
 def fetch_tweets(username: str) -> list:
-    """Birden fazla Nitter instance dene, biri çalışana kadar."""
+    """RSSHub üzerinden tweetleri çek."""
     for instance in NITTER_INSTANCES:
-        url = f"https://{instance}/{username}/rss"
+        url = f"https://{instance}/twitter/user/{username}"
         try:
             feed = feedparser.parse(url)
             if feed.entries:
