@@ -23,7 +23,6 @@ NITTER_INSTANCES = [
     "nitter.lucahammer.com",
     "nitter.cz",
 ]
-]
 
 CHECK_INTERVAL_MINUTES = 15
 SEEN_FILE = "seen_tweets.json"
