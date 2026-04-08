@@ -17,10 +17,12 @@ TWITTER_ACCOUNTS = [
 ]
 
 NITTER_INSTANCES = [
-    "nitter.poast.org",
-    "nitter.privacydev.net",
-    "nitter.1d4.us",
-    "nitter.kavin.rocks",
+    "nitter.tiekoetter.com",
+    "nitter.rawbit.ninja",
+    "nitter.mint.lgbt",
+    "nitter.lucahammer.com",
+    "nitter.cz",
+]
 ]
 
 CHECK_INTERVAL_MINUTES = 15
