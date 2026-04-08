@@ -91,10 +91,12 @@ def translate_tweet(text: str) -> str:
 
 def send_telegram(message: str):
     url = f"https://api.telegram.org/bot{TELEGRAM_TOKEN}/sendMessage"
+    # Özel karakterleri temizle
+    clean = message.replace("<", "").replace(">", "").replace("&", "ve")
     payload = {
         "chat_id": TELEGRAM_CHAT_ID,
-        "text": message,
-        "disable_web_page_preview": False,
+        "text": clean,
+        "disable_web_page_preview": True,
     }
     try:
         r = requests.post(url, json=payload, timeout=10)
