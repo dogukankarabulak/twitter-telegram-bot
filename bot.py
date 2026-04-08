@@ -94,7 +94,6 @@ def send_telegram(message: str):
     payload = {
         "chat_id": TELEGRAM_CHAT_ID,
         "text": message,
-        "parse_mode": "HTML",
         "disable_web_page_preview": False,
     }
     try:
@@ -107,8 +106,8 @@ def send_telegram(message: str):
 
 def format_message(tweet: dict, translation: str) -> str:
     return (
-        f"🐦 <b>@{tweet['username']}</b>\n\n"
-        f"🇬🇧 <i>{tweet['title']}</i>\n\n"
+        f"🐦 @{tweet['username']}\n\n"
+        f"🇬🇧 {tweet['title']}\n\n"
         f"🇹🇷 {translation}\n\n"
         f"🔗 {tweet['link']}"
     )
